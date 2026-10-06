@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Turn cram-cards.csv into a hyena-id library file you can import straight
+Turn cram-cards.csv into a lion-id library file you can import straight
 into the app.
 
     pip3 install pillow
     python3 cram-to-app.py cram-cards.csv "KCM North" north-clan.json
 
 It downloads every image, resizes it the same way the app does
-(1600px long edge, WebP), groups left and right sides by hyena name,
+(1600px long edge, WebP), groups left and right sides by lion name,
 and writes a library file.
 
 Nothing is guessed silently: anything it cannot parse is listed at the
@@ -131,7 +131,7 @@ def main():
     if not animals:
         sys.exit("\nNothing usable was produced.  Check the CSV.")
 
-    hyenas, photos = [], {}
+    lions, photos = [], {}
     for name, a in sorted(animals.items()):
         slug = re.sub(r"[^a-z0-9]", "", clan.lower())
         rec = {"id": f"cram-{slug}-{re.sub(r'[^A-Z0-9]', '', name)}",
@@ -143,20 +143,20 @@ def main():
                 pid = f"{rec['id']}-{side}{k}"
                 photos[pid] = "data:image/webp;base64," + base64.b64encode(blob).decode()
                 rec[key].append(pid)
-        hyenas.append(rec)
+        lions.append(rec)
 
-    payload = {"format": "hyena-id-1",
+    payload = {"format": "lion-id-1",
                "exported": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-               "clans": [], "hidden": [], "hyenas": hyenas, "photos": photos}
+               "clans": [], "hidden": [], "lions": lions, "photos": photos}
     with open(out, "w") as f:
         json.dump(payload, f)
 
     mb = os.path.getsize(out) / 1048576
     print(f"\n{'='*52}")
-    print(f"{len(hyenas)} hyenas, {len(photos)} photos → {out}  ({mb:.1f} MB)")
+    print(f"{len(lions)} lions, {len(photos)} photos → {out}  ({mb:.1f} MB)")
 
     from collections import Counter
-    for c, n in sorted(Counter(h["cls"] for h in hyenas).items()):
+    for c, n in sorted(Counter(h["cls"] for h in lions).items()):
         print(f"   {c:<16} {n}")
 
     if PREFIX_OK:
@@ -164,7 +164,7 @@ def main():
         for k, v in sorted(PREFIX_OK.items()):
             print(f"   {k!r} -> {v}")
 
-    lonely = [h["name"] for h in hyenas if not h["left"] or not h["right"]]
+    lonely = [h["name"] for h in lions if not h["left"] or not h["right"]]
     if lonely:
         print(f"\n{len(lonely)} with only one side: {', '.join(lonely[:20])}"
               + (" ..." if len(lonely) > 20 else ""))
