@@ -1,4 +1,4 @@
-# Hyena ID
+# Lion ID
 
 A phone and tablet replacement for the ID binders. Left photo on top, right photo on
 bottom, with text you type yourself overlaid. Works with no signal once installed.
@@ -19,10 +19,10 @@ Upload everything if you'd rather not track which files changed.
 
 ## Putting it online
 
-1. New GitHub repo, e.g. `mara-hyena-project/hyena-id`.
+1. New GitHub repo, e.g. `mara-lion-project/lion-id`.
 2. Drag the files in through the web page. No git needed.
 3. Settings → Pages → Deploy from branch → `main` / root.
-4. Open `https://<org>.github.io/hyena-id/` on a phone.
+4. Open `https://<org>.github.io/lion-id/` on a phone.
 
 **Install it.** iPhone: Share → Add to Home Screen. Android: menu → Install app.
 It needs to be on the home screen to run full screen and to hold its photos reliably.
@@ -32,7 +32,7 @@ It needs to be on the home screen to run full screen and to hold its photos reli
 Check the build number at the bottom of the Library screen. If it isn't the one you
 just uploaded:
 
-1. Library → **Reload the latest app version**. Keeps all hyenas and photos.
+1. Library → **Reload the latest app version**. Keeps all lions and photos.
 2. Still stale? The new files probably aren't on the server. Load
    `https://<your-site>/index.html` directly and check.
 3. For the icon specifically, delete the home screen shortcut and re-add it. iOS caches
@@ -44,21 +44,21 @@ just uploaded:
 
 | Gesture | Does |
 |---|---|
-| swipe up / down | next or previous hyena |
-| swipe left / right | other photos of the same hyena, different angle or light |
+| swipe up / down | next or previous lion |
+| swipe left / right | other photos of the same lion, different angle or light |
 | tap a photo | full screen; pinch to zoom, drag to pan, double-tap for 2.5x, X to close |
 | eye icon, top bar | hide or show the text |
 
 Arrow keys, space and Escape do the same on a laptop, where the scroll wheel zooms.
 
-**Add a hyena.** `+` from the class list. Type whatever you want overlaid; none of it is
+**Add a lion.** `+` from the class list. Type whatever you want overlaid; none of it is
 checked or connected to any database. Photos are shrunk to 1600px on the device, so
 full-size camera files are fine to hand it.
 
 **Set the default photo.** In the edit screen, tap a photo to move it to first position.
 First is what you land on; the rest are the sideways swipes.
 
-**Move between folders.** Edit the hyena, change the Clan or Class dropdown, save.
+**Move between folders.** Edit the lion, change the Clan or Class dropdown, save.
 Photos follow.
 
 **Crop.** Tap a photo, then the crop icon. Drag the corners, then Crop.
@@ -77,18 +77,18 @@ Library → Clans to manage them:
 - **Hide** takes a clan out of daily use but keeps everything. This is what to use for a
   dropped study clan. "Show" brings it back.
 - **Delete** only appears once a clan is hidden, and asks you to type the clan name if it
-  still holds hyenas.
+  still holds lions.
 
-Hidden status travels in export files. Importing a library containing hyenas from a
+Hidden status travels in export files. Importing a library containing lions from a
 hidden clan un-hides it, on the principle that arriving photos shouldn't vanish silently.
 
 ## Camp sync
 
-If a Cloudflare Worker has been set up (see `hyena-sync/SETUP.md`), Library → Camp sync
+If a Cloudflare Worker has been set up (see `lion-sync/SETUP.md`), Library → Camp sync
 holds a server address and a shared camp password. Press **Sync now** and the device
 sends its changes and collects everyone else's.
 
-This is the better route once several people are adding hyenas. Only what changed moves,
+This is the better route once several people are adding lions. Only what changed moves,
 nothing large is ever held in memory, and a new RA gets the whole library with one
 button. Deletions propagate, which exports alone cannot do.
 
@@ -107,8 +107,8 @@ matter.
 file is more than a browser can build. The size estimate under the dropdowns updates as
 you choose, and warns you when a selection is too big.
 
-Importing merges: photo lists are unioned, so two RAs adding photos of the same hyena in
-the same week won't overwrite each other. Text fields are last-writer-wins. Hyenas are
+Importing merges: photo lists are unioned, so two RAs adding photos of the same lion in
+the same week won't overwrite each other. Text fields are last-writer-wins. Lions are
 matched by name within a clan, so moving one between classes propagates rather than
 duplicating.
 
