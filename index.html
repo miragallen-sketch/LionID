@@ -9,7 +9,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<title>Hyena ID</title>
+<title>Lion ID</title>
 <style>
 :root{
   --ink:#14120f;
@@ -225,7 +225,7 @@ button{background:none;border:0;cursor:pointer}
 <section class="screen on" id="s-clans">
   <div class="bar">
     <div style="flex:1">
-      <h1 style="margin:0">Hyena ID</h1>
+      <h1 style="margin:0">Lion ID</h1>
       <div class="sub" id="libcount">—</div>
     </div>
     <button class="iconbtn" id="btn-settings" aria-label="Library settings">
@@ -248,7 +248,7 @@ button{background:none;border:0;cursor:pointer}
       <h1 id="clantitle">—</h1>
       <div class="sub">Age–sex class</div>
     </div>
-    <button class="iconbtn" id="btn-new" aria-label="Add hyena">
+    <button class="iconbtn" id="btn-new" aria-label="Add lion">
       <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
     </button>
   </div>
@@ -269,7 +269,7 @@ button{background:none;border:0;cursor:pointer}
         <svg viewBox="0 0 24 24" id="eye-on"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         <svg viewBox="0 0 24 24" id="eye-off" style="display:none"><path d="M17.9 17.9A10.4 10.4 0 0 1 12 20C5 20 1 12 1 12a19 19 0 0 1 5.1-5.9M9.9 4.2A10.9 10.9 0 0 1 12 4c7 0 11 8 11 8a19 19 0 0 1-2.2 3.2M1 1l22 22"/></svg>
       </button>
-      <button class="iconbtn" id="btn-edit" aria-label="Edit this hyena">
+      <button class="iconbtn" id="btn-edit" aria-label="Edit this lion">
         <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
       </button>
     </div>
@@ -284,7 +284,7 @@ button{background:none;border:0;cursor:pointer}
     <button class="iconbtn" id="btn-cancel" aria-label="Cancel">
       <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
-    <div style="flex:1;min-width:0"><h1 id="edittitle">New hyena</h1></div>
+    <div style="flex:1;min-width:0"><h1 id="edittitle">New lion</h1></div>
     <button class="iconbtn" id="btn-save" aria-label="Save">
       <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
     </button>
@@ -316,8 +316,8 @@ button{background:none;border:0;cursor:pointer}
         <div class="field"><label>Clan</label><select id="f-clan"></select></div>
         <div class="field"><label>Class</label><select id="f-class"></select></div>
       </div>
-      <p class="hint">Change these to move the hyena. All photos move with it.</p>
-      <button class="btn danger" id="btn-del">Delete this hyena</button>
+      <p class="hint">Change these to move the lion. All photos move with it.</p>
+      <button class="btn danger" id="btn-del">Delete this lion</button>
     </div>
   </div>
   <input type="file" id="picker" accept="image/*" multiple hidden>
@@ -375,7 +375,7 @@ button{background:none;border:0;cursor:pointer}
     <div class="sect">
       <div class="eyebrow" style="margin-bottom:10px">Reset</div>
       <button class="btn ghost" id="btn-refresh">Reload the latest app version</button>
-      <p class="hint" style="margin-top:10px">Keeps every hyena and photo. Only replaces the app itself.</p>
+      <p class="hint" style="margin-top:10px">Keeps every lion and photo. Only replaces the app itself.</p>
       <button class="btn danger" id="btn-wipe">Erase everything on this device</button>
     </div>
   </div>
@@ -435,17 +435,17 @@ const MAXPX = 1600, QUALITY = 0.82;
 /* Camp sync server. Change this line if the Worker ever moves.
    The password is deliberately NOT here — it is the only thing keeping
    strangers out, and this file is public. */
-const DEFAULT_SYNC_URL = "https://hyena-sync.marahyenaproject.workers.dev";
+const DEFAULT_SYNC_URL = "https://lion-sync.maralionproject.workers.dev";
 const BUILD = "2026-07-19x";
 
 /* ---------------- storage ---------------- */
 let db;
 function open(){
   return new Promise((res,rej)=>{
-    const r = indexedDB.open("hyenaid",2);
+    const r = indexedDB.open("lionid",2);
     r.onupgradeneeded = e=>{
       const d = e.target.result;
-      if(!d.objectStoreNames.contains("hyenas")) d.createObjectStore("hyenas",{keyPath:"id"});
+      if(!d.objectStoreNames.contains("lions")) d.createObjectStore("lions",{keyPath:"id"});
       if(!d.objectStoreNames.contains("photos")) d.createObjectStore("photos",{keyPath:"id"});
       if(!d.objectStoreNames.contains("meta"))   d.createObjectStore("meta",{keyPath:"k"});
     };
@@ -455,14 +455,14 @@ function open(){
 }
 function tx(store,mode){return db.transaction(store,mode).objectStore(store)}
 function req(r){return new Promise((res,rej)=>{r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
-const putH = h=>req(tx("hyenas","readwrite").put(h));
+const putH = h=>req(tx("lions","readwrite").put(h));
 const stamp = h=>{ h.mod = Date.now(); return h; };
 async function reload(){
   records = await allH();
-  hyenas = records.filter(h=>!h.del);
+  lions = records.filter(h=>!h.del);
 }
-const delH = id=>req(tx("hyenas","readwrite").delete(id));
-const allH = ()=>req(tx("hyenas","readonly").getAll());
+const delH = id=>req(tx("lions","readwrite").delete(id));
+const allH = ()=>req(tx("lions","readonly").getAll());
 const putP = (id,blob)=>req(tx("photos","readwrite").put({id,blob}));
 const putRec = rec=>req(tx("photos","readwrite").put(rec));
 const getP = id=>req(tx("photos","readonly").get(id));
@@ -501,10 +501,10 @@ function scanPhotoSizes(){
 const putM = (k,v)=>req(tx("meta","readwrite").put({k,v}));
 async function saveExtra(){ extra=[...new Set(extra)]; await putM("clans",extra); }
 async function saveHidden(){ hidden=[...new Set(hidden)]; await putM("hidden",hidden); }
-const clanCount = c => hyenas.filter(h=>h.clan===c).length;
+const clanCount = c => lions.filter(h=>h.clan===c).length;
 
 /* ---------------- state ---------------- */
-let hyenas = [];        // live only
+let lions = [];        // live only
 let records = [];       // live plus tombstones, for sync
 let cur = {clan:null, cls:null, list:[], i:0, a:0};
 let draft = null;
@@ -612,7 +612,7 @@ const chev = '<svg class="chev" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></s
 function renderClans(){
   const el = $("#clanlist"); el.innerHTML="";
   CLANS().forEach(c=>{
-    const n = hyenas.filter(h=>h.clan===c).length;
+    const n = lions.filter(h=>h.clan===c).length;
     const b = document.createElement("button");
     b.className = "row" + (n?"":" empty");
     b.innerHTML = `<span class="label">${c}</span><span class="count">${n||"—"}</span>${chev}`;
@@ -624,20 +624,20 @@ function renderClans(){
   add.innerHTML = `<span class="label">+ Add a clan</span>`;
   add.onclick = openNewClan;
   el.appendChild(add);
-  const shown = hyenas.filter(h=>!hidden.includes(h.clan)).length;
-  $("#libcount").textContent = shown ? shown+" hyenas on this device" : "No hyenas yet — pick a clan to start";
+  const shown = lions.filter(h=>!hidden.includes(h.clan)).length;
+  $("#libcount").textContent = shown ? shown+" lions on this device" : "No lions yet — pick a clan to start";
 }
 
 function renderClasses(){
   $("#clantitle").textContent = cur.clan;
   const el = $("#classlist"); el.innerHTML="";
   CLASSES.forEach(k=>{
-    const n = hyenas.filter(h=>h.clan===cur.clan && h.cls===k).length;
+    const n = lions.filter(h=>h.clan===cur.clan && h.cls===k).length;
     const b = document.createElement("button");
     b.className = "row" + (n?"":" empty");
     b.innerHTML = `<span class="label">${k}</span><span class="count">${n||"—"}</span>${chev}`;
     b.onclick = ()=>{
-      if(!n){ toast("No hyenas in "+k+" yet"); return; }
+      if(!n){ toast("No lions in "+k+" yet"); return; }
       cur.cls=k; openBrowse();
     };
     el.appendChild(b);
@@ -646,7 +646,7 @@ function renderClasses(){
 
 /* ---------------- browse ---------------- */
 function sortList(){
-  cur.list = hyenas.filter(h=>h.clan===cur.clan && h.cls===cur.cls)
+  cur.list = lions.filter(h=>h.clan===cur.clan && h.cls===cur.cls)
                    .sort((a,b)=>(a.name||"").toUpperCase()
                                  .localeCompare((b.name||"").toUpperCase(),
                                                 undefined,{numeric:true}));
@@ -698,7 +698,7 @@ function step(d){
 function angle(d){
   const h = cur.list[cur.i];
   const n = Math.max((h.left||[]).length,(h.right||[]).length);
-  if(n<2){ toast("Only one photo for "+(h.name||"this hyena")); return; }
+  if(n<2){ toast("Only one photo for "+(h.name||"this lion")); return; }
   cur.a = (cur.a + d + n) % n; paint();
 }
 
@@ -959,7 +959,7 @@ function openEdit(h){
             : {id:uid(), clan:cur.clan||CLANS()[0], cls:cur.cls||CLASSES[0],
                name:"",full:"",sex:"",dob:"",mom:"",ear:"",left:[],right:[]};
   draft._new = !h;
-  $("#edittitle").textContent = h ? (h.name||"Edit hyena") : "New hyena";
+  $("#edittitle").textContent = h ? (h.name||"Edit lion") : "New lion";
   $("#f-name").value=draft.name; $("#f-full").value=draft.full;
   $("#f-sex").value=draft.sex;
   $("#f-dob").value=draft.dob;   $("#f-mom").value=draft.mom;
@@ -1027,7 +1027,7 @@ function checkDup(){
   const w = $("#dupwarn"); if(!draft) return;
   const nm = $("#f-name").value.trim().toUpperCase();
   const cl = $("#f-clan").value;
-  const hit = nm && hyenas.find(h=>h.id!==draft.id && h.clan===cl &&
+  const hit = nm && lions.find(h=>h.id!==draft.id && h.clan===cl &&
                                    (h.name||"").toUpperCase()===nm);
   if(!hit){ w.innerHTML=""; return; }
   w.innerHTML = `<div class="warn">${esc(hit.name)} already exists in ${esc(hit.clan)} `
@@ -1066,7 +1066,7 @@ $("#btn-save").onclick = async ()=>{
 };
 
 $("#btn-del").onclick = async ()=>{
-  if(!confirm("Delete "+(draft.name||"this hyena")+" and its photos?")) return;
+  if(!confirm("Delete "+(draft.name||"this lion")+" and its photos?")) return;
   for(const id of [...draft.left,...draft.right]) await delP(id);
   // keep a marker so the deletion reaches other devices at the next sync
   await putH(stamp({id:draft.id, del:true, clan:draft.clan, cls:draft.cls,
@@ -1215,7 +1215,7 @@ $("#btn-sync").onclick = async ()=>{
     // 3. fetch any photo we are missing
     await scanPhotoSizes();
     const want = [];
-    for(const h of hyenas)
+    for(const h of lions)
       for(const id of [...(h.left||[]),...(h.right||[])])
         if(!photoSize.has(id)) want.push(id);
 
@@ -1273,13 +1273,13 @@ function renderClanMgr(){
 async function killClan(c,n){
   if(n>0){
     const typed = prompt(
-      `This erases ${n} hyena${n>1?"s":""} in ${c} and every photo, on this device only.\n\n`+
+      `This erases ${n} lion${n>1?"s":""} in ${c} and every photo, on this device only.\n\n`+
       `Export the library first if you want to keep them.\n\n`+
       `Type the clan name to confirm:`);
     if(!typed || typed.trim().toLowerCase()!==c.toLowerCase()){ toast("Not deleted"); return; }
   }else if(!confirm(`Delete the empty clan ${c}?`)) return;
   busy(true);
-  for(const h of hyenas.filter(x=>x.clan===c)){
+  for(const h of lions.filter(x=>x.clan===c)){
     for(const id of [...(h.left||[]),...(h.right||[])]){
       await delP(id);
       const u = urls.get(id); if(u){ URL.revokeObjectURL(u); urls.delete(id); }
@@ -1348,11 +1348,11 @@ $("#btn-settings").onclick = async ()=>{
   const mb = (bytes/1048576).toFixed(1);
   const np = photoSize.size;
   const lines = CLANS().map(c=>{
-    const n = hyenas.filter(h=>h.clan===c).length;
+    const n = lions.filter(h=>h.clan===c).length;
     return `${c.padEnd(12," ")} ${String(n).padStart(3," ")}`;
   });
   $("#stats").innerHTML = lines.join("<br>") +
-    `<br><br>${hyenas.length} hyenas · ${np} photos · ${mb} MB` +
+    `<br><br>${lions.length} lions · ${np} photos · ${mb} MB` +
     `<br><span style="color:var(--sharpie)">build ${BUILD}</span>`;
   renderClanMgr();
   fillExport();
@@ -1373,7 +1373,7 @@ function fillExport(){
 
 function exportSel(){
   const cl = $("#x-clan").value, kl = $("#x-class").value;
-  return hyenas.filter(h=>h.clan===cl && (!kl || h.cls===kl));
+  return lions.filter(h=>h.clan===cl && (!kl || h.cls===kl));
 }
 
 function sizeExport(){
@@ -1388,7 +1388,7 @@ function sizeExport(){
   if(mb > 400) warn = "  — too big, pick one class";
   else if(phone && mb > 120) warn = "  — large for a phone, pick one class if it fails";
   $("#x-size").textContent =
-    `${sel.length} hyenas · ${n} photos · file about ${mb<1?"<1":mb.toFixed(0)} MB` + warn;
+    `${sel.length} lions · ${n} photos · file about ${mb<1?"<1":mb.toFixed(0)} MB` + warn;
 }
 $("#x-clan").onchange = sizeExport;
 $("#x-class").onchange = sizeExport;
@@ -1418,10 +1418,10 @@ async function writePart(list, fname){
   busy(true, "preparing…");
   try{
     const parts = [
-      '{"format":"hyena-id-1","exported":' + JSON.stringify(new Date().toISOString()) +
+      '{"format":"lion-id-1","exported":' + JSON.stringify(new Date().toISOString()) +
       ',"clans":' + JSON.stringify(extra) +
       ',"hidden":' + JSON.stringify(hidden) +
-      ',"hyenas":' + JSON.stringify(list) +
+      ',"lions":' + JSON.stringify(list) +
       ',"photos":{'
     ];
     let first = true, done = 0;
@@ -1463,7 +1463,7 @@ function showParts(){
     `<p class="hint" style="margin:0 0 14px">${esc(cl)}${kl ? " · " + esc(kl) : ""} is too big for one file. ` +
     `It goes out as ${parts.length} files — save each one, then import all of them on the other device.</p>` +
     `<div class="mono" style="font-size:13px;color:var(--paper-dim);margin-bottom:14px">` +
-    `part ${i+1} of ${parts.length} · ${parts[i].length} hyenas</div>`;
+    `part ${i+1} of ${parts.length} · ${parts[i].length} lions</div>`;
   $("#m-ok").textContent = `Save part ${i+1}`;
   $("#m-no").textContent = i ? "Stop" : "Cancel";
   $("#modal").classList.add("on");
@@ -1489,10 +1489,10 @@ async function legacyExport(){
   busy(true, "preparing…");
   try{
     const parts = [
-      '{"format":"hyena-id-1","exported":' + JSON.stringify(new Date().toISOString()) +
+      '{"format":"lion-id-1","exported":' + JSON.stringify(new Date().toISOString()) +
       ',"clans":' + JSON.stringify(extra) +
       ',"hidden":' + JSON.stringify(hidden) +
-      ',"hyenas":' + JSON.stringify(sel) +
+      ',"lions":' + JSON.stringify(sel) +
       ',"photos":{'
     ];
     let first = true, done = 0;
@@ -1526,7 +1526,7 @@ async function deliver(blob, fname, n){
     const file = new File([blob], fname, {type:"application/json"});
     if(navigator.canShare && navigator.canShare({files:[file]})){
       await navigator.share({files:[file], title:fname});
-      toast(`Shared ${n} hyenas`);
+      toast(`Shared ${n} lions`);
       return;
     }
   }catch(e){
@@ -1541,7 +1541,7 @@ async function deliver(blob, fname, n){
     a.click();
     a.remove();
     setTimeout(()=>URL.revokeObjectURL(a.href),10000);
-    toast(`Exported ${n} hyenas`);
+    toast(`Exported ${n} lions`);
   }catch(e){
     toast("This browser will not save the file — try a laptop");
     console.error(e);
@@ -1554,14 +1554,14 @@ $("#imp").onchange = async e=>{
   busy(true);
   try{
     const data = JSON.parse(await f.text());
-    if(data.format!=="hyena-id-1") throw new Error("wrong format");
+    if(data.format!=="lion-id-1") throw new Error("wrong format");
     for(const c of data.clans||[]) if(!ALLCLANS().includes(c)) extra.push(c);
     for(const c of data.hidden||[]) if(!hidden.includes(c)) hidden.push(c);
     await saveExtra(); await saveHidden(); fillSelects();
     for(const [id,b64] of Object.entries(data.photos||{})) await putP(id, b642blob(b64));
     const existing = await allH();
     let added=0, merged=0;
-    for(const h of data.hyenas||[]){
+    for(const h of data.lions||[]){
       const dup = existing.find(x=>x.clan===h.clan &&
                                    (x.name||"").toUpperCase()===(h.name||"").toUpperCase());
       if(dup){
@@ -1578,7 +1578,7 @@ $("#imp").onchange = async e=>{
     renderClans();
     toast(added+" added, "+merged+" updated");
     show("clans");
-  }catch(err){ toast("That file is not a hyena library"); console.error(err); }
+  }catch(err){ toast("That file is not a lion library"); console.error(err); }
   busy(false);
 };
 
@@ -1620,12 +1620,12 @@ $("#btn-reclaim").onclick = async ()=>{
 
 
 $("#btn-wipe").onclick = async ()=>{
-  if(!confirm("Erase every hyena and photo stored on this device? This cannot be undone.")) return;
-  await req(tx("hyenas","readwrite").clear());
+  if(!confirm("Erase every lion and photo stored on this device? This cannot be undone.")) return;
+  await req(tx("lions","readwrite").clear());
   await req(tx("photos","readwrite").clear());
   await req(tx("meta","readwrite").clear()); extra=[]; hidden=[]; fillSelects();
   urls.forEach(u=>URL.revokeObjectURL(u)); urls.clear();
-  hyenas = []; records = []; renderClans(); show("clans");
+  lions = []; records = []; renderClans(); show("clans");
   toast("Erased");
 };
 
