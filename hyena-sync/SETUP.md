@@ -17,7 +17,7 @@ press Sync.
 ## 1. Log in
 
 ```
-cd hyena-sync
+cd lion-sync
 npx wrangler login
 ```
 
@@ -26,7 +26,7 @@ A browser window opens. Approve it.
 ## 2. Make the bucket
 
 ```
-npx wrangler r2 bucket create hyena-id
+npx wrangler r2 bucket create lion-id
 ```
 
 The name must match `bucket_name` in `wrangler.toml`.
@@ -50,13 +50,13 @@ npx wrangler deploy
 It prints a URL like:
 
 ```
-https://hyena-sync.yourname.workers.dev
+https://lion-sync.yourname.workers.dev
 ```
 
 That's the server address. Check it works:
 
 ```
-curl https://hyena-sync.yourname.workers.dev/api/ping
+curl https://lion-sync.yourname.workers.dev/api/ping
 ```
 
 You should see `{"ok":true}`.
@@ -81,12 +81,12 @@ Nothing is ever held in memory beyond one photo at a time, which is why this wor
 phone where exporting a whole clan did not.
 
 Conflicts resolve by whoever edited last. Photo lists are per-record, so two RAs adding
-photos to different hyenas never interact at all. Two people editing the *same* hyena in
+photos to different lions never interact at all. Two people editing the *same* lion in
 the same minute is the only case where one edit wins, and that was true of the file
 method too.
 
-**Deletions now propagate.** Deleting a hyena leaves a marker that tells other devices to
-drop it. Under the old file method a deleted hyena came back at the next import.
+**Deletions now propagate.** Deleting a lion leaves a marker that tells other devices to
+drop it. Under the old file method a deleted lion came back at the next import.
 
 **Cropping makes a new photo id**, so other devices see the cropped version rather than
 keeping the original silently.
@@ -95,27 +95,27 @@ keeping the original silently.
 
 ```
 curl -H "Authorization: Bearer YOUR-PASSWORD" \
-     https://hyena-sync.yourname.workers.dev/api/stat
+     https://lion-sync.yourname.workers.dev/api/stat
 ```
 
-Returns live hyenas, deletion markers, photo count and total bytes.
+Returns live lions, deletion markers, photo count and total bytes.
 
 The Cloudflare dashboard shows requests and storage under Workers and R2.
 
 ## Clearing out deleted photos
 
-Deleting a photo in the app updates the hyena's record, and that syncs. But the photo
+Deleting a photo in the app updates the lion's record, and that syncs. But the photo
 file itself stays on the server forever — nothing removes it. After a big pruning
 session the server still holds everything, and still lists it all at every sync.
 
 `cleanup.sh` fixes that:
 
 ```
-cd hyena-sync
+cd lion-sync
 ./cleanup.sh
 ```
 
-It shows the current counts, asks for confirmation, deletes photos no hyena points at,
+It shows the current counts, asks for confirmation, deletes photos no lion points at,
 and shows the counts again.
 
 **Run it only after every device has synced.** The server acts on the records it has
