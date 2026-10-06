@@ -425,7 +425,7 @@ button{background:none;border:0;cursor:pointer}
 <script>
 "use strict";
 
-const BUILTIN = ["Crater","Ndutu","Twin Hill","examplepride1","examplepride2","examplepride3"];
+const BUILTIN = ["Crater","Ndutu","Twin Hill","Unknown","examplepride/area1","examplepride/area2"];
 let extra = [], hidden = [];
 const ALLCLANS = () => [...BUILTIN, ...extra];
 const CLANS    = () => ALLCLANS().filter(c=>!hidden.includes(c));
