@@ -1,12 +1,12 @@
 /**
- * Hyena ID sync server — a single Cloudflare Worker backed by an R2 bucket.
+ * lion ID sync server — a single Cloudflare Worker backed by an R2 bucket.
  *
  * Bindings expected (see wrangler.toml):
  *   BUCKET    R2 bucket
  *   SYNC_KEY  secret, the shared camp password
  *
  * Layout inside the bucket:
- *   index.json      every hyena record, keyed by id
+ *   index.json      every lion record, keyed by id
  *   photo/<id>      one WebP per photo
  *
  * Endpoints (all POST/GET under /api):
@@ -15,7 +15,7 @@
  *   POST /api/have           {ids:[...]}      -> {missing:[...]}
  *   PUT  /api/photo/<id>     raw bytes
  *   GET  /api/photo/<id>     raw bytes
- *   GET  /api/stat           -> {hyenas, photos, bytes}
+ *   GET  /api/stat           -> {lions, photos, bytes}
  */
 
 const VERSION = "2026-07-19x";
@@ -205,7 +205,7 @@ export default {
           cursor = list.truncated ? list.cursor : null;
         } while (cursor);
         const live = Object.values(records).filter(r => !r.del).length;
-        return json({ hyenas: live, tombstones: Object.keys(records).length - live, photos, bytes });
+        return json({ lions: live, tombstones: Object.keys(records).length - live, photos, bytes });
       }
 
       return json({ error: "no such endpoint" }, 404);
