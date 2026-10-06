@@ -425,11 +425,11 @@ button{background:none;border:0;cursor:pointer}
 <script>
 "use strict";
 
-const BUILTIN = ["Talek West","KCM North","KCM South","Serena North","Serena South","Happy Zebra"];
+const BUILTIN = ["Crater","Ndutu","Twin Hill","examplepride1","examplepride2","examplepride3"];
 let extra = [], hidden = [];
 const ALLCLANS = () => [...BUILTIN, ...extra];
 const CLANS    = () => ALLCLANS().filter(c=>!hidden.includes(c));
-const CLASSES = ["Cubs","Subadults","Adult Females","Immigrant Males","Aliens"];
+const CLASSES = ["Cubs","Subadults","Adult Females","Adult Males"];
 const MAXPX = 1600, QUALITY = 0.82;
 
 /* Camp sync server. Change this line if the Worker ever moves.
