@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Turn a sorted photo bank into hyena-id library files.
+Turn a sorted photo bank into lion-id library files.
 
 Expects the tree you already have:
 
@@ -114,7 +114,7 @@ def walk(root):
             if k and cls is None:
                 cls, cls_at = k, i
 
-        # The hyena's own folder is whatever sits below the class folder.
+        # The lion's own folder is whatever sits below the class folder.
         name_from_dir = ""
         if cls_at >= 0 and len(parts) > cls_at + 1:
             name_from_dir = parts[-1].strip().upper()
@@ -157,7 +157,7 @@ def cmd_scan(root):
     total = 0
     for clan in sorted(tree, key=lambda c: APP_CLANS.index(c)):
         rows = tree[clan]
-        print(f"\n{'='*46}\n{clan}   {len(rows)} hyenas")
+        print(f"\n{'='*46}\n{clan}   {len(rows)} lions")
         by_cls = defaultdict(list)
         for (cls, name), v in rows.items():
             by_cls[cls].append((name, v))
@@ -208,7 +208,7 @@ def cmd_build(root, outdir):
     failed = []
     for clan in sorted(per_clan, key=lambda c: APP_CLANS.index(c)):
         slug = re.sub(r"[^a-z0-9]", "", clan.lower())
-        hyenas, photos = [], {}
+        lions, photos = [], {}
         print(f"\n=== {clan} ===")
         for (cls, name) in sorted(per_clan[clan]):
             a = per_clan[clan][(cls, name)]
@@ -227,16 +227,16 @@ def cmd_build(root, outdir):
                     photos[pid] = "data:image/webp;base64," + base64.b64encode(blob).decode()
                     rec[key].append(pid)
             if rec["left"] or rec["right"]:
-                hyenas.append(rec)
+                lions.append(rec)
                 print(f"  {name:<14}{cls:<16}L{len(rec['left'])} R{len(rec['right'])}")
 
         out = os.path.join(outdir, slug + ".json")
         with open(out, "w") as f:
-            json.dump({"format": "hyena-id-1",
+            json.dump({"format": "lion-id-1",
                        "exported": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-                       "clans": [], "hidden": [], "hyenas": hyenas, "photos": photos}, f)
+                       "clans": [], "hidden": [], "lions": lions, "photos": photos}, f)
         mb = os.path.getsize(out) / 1048576
-        print(f"  -> {out}  {len(hyenas)} hyenas, {len(photos)} photos, {mb:.1f} MB")
+        print(f"  -> {out}  {len(lions)} lions, {len(photos)} photos, {mb:.1f} MB")
         if mb > 150:
             print("     Large file. Import on a laptop, not a phone.")
 
